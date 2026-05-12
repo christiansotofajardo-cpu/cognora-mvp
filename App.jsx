@@ -17,7 +17,6 @@ import {
 
 const perfil = {
   nombre: "Elena Martínez",
-  rol: "Dirección de Innovación Organizacional",
   configuracion: "Integradora Estratégica Adaptativa",
   resumen:
     "Muestra alta integración contextual, pensamiento estratégico y capacidad para coordinar escenarios ambiguos sin reducir la complejidad humana a decisiones simples.",
@@ -32,57 +31,6 @@ const perfil = {
     ["Orientación a la ejecución", 74],
     ["Coherencia semántica", 88],
   ],
-  dinamicas: [
-    "Alta integración contextual",
-    "Síntesis estratégica avanzada",
-    "Buena tolerancia a la ambigüedad",
-    "Regulación moderadamente fluctuante bajo presión",
-  ],
-  tensiones: [
-    {
-      titulo: "Visión estratégica / Fragilidad operacional",
-      texto:
-        "Presenta una lectura macroestructural sólida, aunque puede experimentar tensión cuando el entorno exige cierre operativo rápido.",
-    },
-    {
-      titulo: "Colaboración adaptativa / Evitación de conflicto",
-      texto:
-        "Tiende a modular el vínculo colaborativo, pero puede suavizar excesivamente la confrontación en escenarios interpersonales difíciles.",
-    },
-    {
-      titulo: "Autonomía / Calibración colectiva reducida",
-      texto:
-        "Opera con alta autonomía, aunque podría beneficiarse de instancias periódicas de sincronización con equipos estratégicos.",
-    },
-  ],
-  evidencias: [
-    ["Estabilidad semántica", "Alta"],
-    ["Reencuadre adaptativo", "Moderado"],
-    ["Modulación colaborativa", "Alta"],
-    ["Coherencia discursiva", "Alta"],
-  ],
-  fragmentos: [
-    "Cuando aumenta la ambigüedad, la respuesta tiende a integrar perspectivas antes que imponer una dirección única.",
-    "La narrativa mantiene coherencia incluso ante escenarios organizacionales de incertidumbre.",
-    "La toma de decisiones aparece mediada por búsqueda de sentido, coordinación y lectura contextual.",
-  ],
-  trayectoria: [
-    "Expansión hacia liderazgo estratégico transversal",
-    "Fortalecimiento de regulación bajo presión operacional",
-    "Mayor cierre decisional en contextos de alta demanda",
-  ],
-  alineacion: [
-    "Ecosistemas de innovación adaptativa",
-    "Equipos interdisciplinarios",
-    "Organizaciones con autonomía estratégica",
-    "Culturas de aprendizaje y transformación",
-  ],
-  fricciones: [
-    "Jerarquías rígidas",
-    "Micromanagement operacional",
-    "Culturas con baja tolerancia a la ambigüedad",
-    "Entornos excesivamente procedimentales",
-  ],
 };
 
 function Sidebar({ view, setView }) {
@@ -96,7 +44,7 @@ function Sidebar({ view, setView }) {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 min-h-screen w-72 border-r border-slate-200 bg-white px-5 py-7">
+    <aside className="fixed left-0 top-0 z-20 min-h-screen w-72 border-r border-slate-200 bg-white px-5 py-7">
       <div className="mb-10">
         <h1 className="text-2xl font-bold tracking-tight text-slate-950">Cognora</h1>
         <p className="mt-1 text-sm text-slate-500">Inteligencia adaptativa humana</p>
@@ -169,7 +117,8 @@ function Dashboard({ setView }) {
             Una visión serena de evaluaciones adaptativas, inteligencia organizacional y actividad interpretativa.
           </p>
         </div>
-        <button className="rounded-2xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white">
+
+        <button className="rounded-2xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800">
           Nueva evaluación
         </button>
       </div>
@@ -199,7 +148,10 @@ function Dashboard({ setView }) {
 
       <section className="mt-6 grid grid-cols-2 gap-6">
         <Card>
-          <h3 className="mb-5 text-2xl font-bold text-slate-950">Actividad interpretativa reciente</h3>
+          <h3 className="mb-5 text-2xl font-bold text-slate-950">
+            Actividad interpretativa reciente
+          </h3>
+
           {[
             "Configuración de liderazgo actualizada.",
             "Nuevo reporte de compatibilidad generado.",
@@ -209,9 +161,10 @@ function Dashboard({ setView }) {
               ✨ {item}
             </div>
           ))}
+
           <button
             onClick={() => setView("Reportes")}
-            className="mt-4 rounded-2xl bg-slate-100 px-5 py-3 text-sm font-medium text-slate-950"
+            className="mt-4 rounded-2xl bg-slate-100 px-5 py-3 text-sm font-medium text-slate-950 transition hover:bg-slate-200"
           >
             Abrir Report Explorer
           </button>
@@ -222,6 +175,7 @@ function Dashboard({ setView }) {
           <p className="mb-7 text-slate-300">
             Cognora transforma contexto organizacional en mapas de inteligencia adaptativa.
           </p>
+
           <Bar label="Flexibilidad adaptativa" value={86} />
           <div className="mt-5" />
           <Bar label="Complejidad estratégica" value={91} />
@@ -241,7 +195,7 @@ function ReportExplorer() {
           <p className="mb-2 text-sm text-slate-500">Reporte interpretativo</p>
           <h2 className="text-5xl font-bold tracking-tight text-slate-950">{perfil.nombre}</h2>
           <p className="mt-3 text-xl font-semibold text-slate-700">{perfil.configuracion}</p>
-          <p className="mt-4 max-w-4xl text-slate-600 leading-relaxed">{perfil.resumen}</p>
+          <p className="mt-4 max-w-4xl leading-relaxed text-slate-600">{perfil.resumen}</p>
         </div>
 
         <Card className="w-80">
@@ -249,10 +203,19 @@ function ReportExplorer() {
             <ShieldCheck size={18} />
             Confianza interpretativa
           </div>
-          <div className="space-y-3 text-sm">
-            <div className="flex justify-between"><span>Confianza</span><b>{perfil.confianza}</b></div>
-            <div className="flex justify-between"><span>Estabilidad</span><b>{perfil.estabilidad}</b></div>
-            <div className="flex justify-between"><span>Consistencia</span><b>{perfil.consistencia}</b></div>
+          <div className="space-y-3 text-sm text-slate-600">
+            <div className="flex justify-between">
+              <span>Confianza</span>
+              <b className="text-slate-950">{perfil.confianza}</b>
+            </div>
+            <div className="flex justify-between">
+              <span>Estabilidad</span>
+              <b className="text-slate-950">{perfil.estabilidad}</b>
+            </div>
+            <div className="flex justify-between">
+              <span>Consistencia</span>
+              <b className="text-slate-950">{perfil.consistencia}</b>
+            </div>
           </div>
         </Card>
       </section>
@@ -263,6 +226,7 @@ function ReportExplorer() {
             <Brain size={21} />
             Mapa de configuración adaptativa
           </div>
+
           <div className="space-y-5">
             {perfil.ejes.map(([label, value]) => (
               <Bar key={label} label={label} value={value} />
@@ -275,13 +239,17 @@ function ReportExplorer() {
             <Sparkles size={21} />
             Dinámica central
           </div>
-          <div className="space-y-3">
-            {perfil.dinamicas.map((d) => (
-              <div key={d} className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
-                {d}
-              </div>
-            ))}
-          </div>
+
+          {[
+            "Alta integración contextual",
+            "Síntesis estratégica avanzada",
+            "Buena tolerancia a la ambigüedad",
+            "Regulación moderadamente fluctuante",
+          ].map((d) => (
+            <div key={d} className="mb-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+              {d}
+            </div>
+          ))}
         </Card>
       </section>
 
@@ -290,15 +258,29 @@ function ReportExplorer() {
           <Layers size={21} />
           Motor de tensiones adaptativas
         </div>
+
         <div className="grid grid-cols-3 gap-5">
-          {perfil.tensiones.map((t) => (
+          {[
+            [
+              "Visión estratégica / Fragilidad operacional",
+              "Lectura macroestructural sólida con posible tensión ante cierres operativos rápidos.",
+            ],
+            [
+              "Colaboración adaptativa / Evitación de conflicto",
+              "Modula el vínculo colaborativo, aunque puede suavizar confrontaciones difíciles.",
+            ],
+            [
+              "Autonomía / Calibración colectiva reducida",
+              "Alta autonomía con necesidad de sincronización periódica con equipos estratégicos.",
+            ],
+          ].map(([titulo, texto]) => (
             <motion.div
-              key={t.titulo}
+              key={titulo}
               whileHover={{ y: -5 }}
               className="rounded-3xl border border-white/10 bg-white/5 p-5"
             >
-              <h3 className="mb-3 font-bold">{t.titulo}</h3>
-              <p className="text-sm leading-relaxed text-slate-300">{t.texto}</p>
+              <h3 className="mb-3 font-bold">{titulo}</h3>
+              <p className="text-sm leading-relaxed text-slate-300">{texto}</p>
             </motion.div>
           ))}
         </div>
@@ -311,20 +293,17 @@ function ReportExplorer() {
             Evidencia interpretativa
           </div>
 
-          <div className="mb-6 grid grid-cols-2 gap-3">
-            {perfil.evidencias.map(([a, b]) => (
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              ["Estabilidad semántica", "Alta"],
+              ["Reencuadre adaptativo", "Moderado"],
+              ["Modulación colaborativa", "Alta"],
+              ["Coherencia discursiva", "Alta"],
+            ].map(([a, b]) => (
               <div key={a} className="rounded-2xl bg-slate-50 p-4">
                 <p className="text-sm text-slate-500">{a}</p>
                 <p className="mt-1 font-bold text-slate-950">{b}</p>
               </div>
-            ))}
-          </div>
-
-          <div className="space-y-3">
-            {perfil.fragmentos.map((f) => (
-              <blockquote key={f} className="border-l-2 border-slate-950 pl-4 text-sm leading-relaxed text-slate-600">
-                {f}
-              </blockquote>
             ))}
           </div>
         </Card>
@@ -335,38 +314,15 @@ function ReportExplorer() {
             Trayectoria adaptativa
           </div>
 
-          <div className="space-y-3">
-            {perfil.trayectoria.map((t) => (
-              <div key={t} className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
-                {t}
-              </div>
-            ))}
-          </div>
-
-          <p className="mt-6 text-sm leading-relaxed text-slate-600">
-            Se proyecta una evolución favorable en ambientes que combinen autonomía estratégica,
-            colaboración reflexiva y exigencias progresivas de cierre decisional.
-          </p>
-        </Card>
-      </section>
-
-      <section className="mt-6 grid grid-cols-2 gap-6">
-        <Card>
-          <h3 className="mb-4 text-xl font-bold text-slate-950">Alineación organizacional fuerte</h3>
-          <div className="flex flex-wrap gap-2">
-            {perfil.alineacion.map((a) => (
-              <span key={a} className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{a}</span>
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <h3 className="mb-4 text-xl font-bold text-slate-950">Posibles zonas de fricción</h3>
-          <div className="flex flex-wrap gap-2">
-            {perfil.fricciones.map((a) => (
-              <span key={a} className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{a}</span>
-            ))}
-          </div>
+          {[
+            "Expansión hacia liderazgo estratégico transversal",
+            "Fortalecimiento de regulación bajo presión operacional",
+            "Mayor cierre decisional en contextos de alta demanda",
+          ].map((t) => (
+            <div key={t} className="mb-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
+              {t}
+            </div>
+          ))}
         </Card>
       </section>
     </main>
