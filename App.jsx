@@ -44,14 +44,13 @@ function Sidebar({ view, setView }) {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 z-20 min-h-screen w-72 border-r border-white/5 bg-[#071426] px-5 py-7 text-white">
-      
+    <aside className="fixed left-0 top-0 z-20 min-h-screen w-72 border-r border-white/10 bg-[#102033] px-5 py-7 text-white">
       <div className="mb-10">
         <h1 className="text-3xl font-bold tracking-tight text-white">
           Cognora
         </h1>
 
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-[15px] text-slate-200/80">
           Inteligencia adaptativa humana
         </p>
       </div>
@@ -61,10 +60,10 @@ function Sidebar({ view, setView }) {
           <button
             key={label}
             onClick={() => setView(label)}
-            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-all duration-300 ${
+            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-[15px] transition-all duration-300 ${
               view === label
-                ? "bg-white text-[#071426] shadow-sm"
-                : "text-slate-400 hover:bg-white/5 hover:text-white"
+                ? "bg-white text-[#102033] shadow-sm"
+                : "text-slate-200/80 hover:bg-white/10 hover:text-white"
             }`}
           >
             <Icon size={18} />
@@ -73,34 +72,29 @@ function Sidebar({ view, setView }) {
         ))}
       </nav>
 
-      <div className="absolute bottom-6 left-5 right-5 rounded-3xl border border-white/5 bg-white/5 p-5 text-white shadow-xl backdrop-blur-md">
-
+      <div className="absolute bottom-6 left-5 right-5 rounded-3xl border border-white/10 bg-white/10 p-5 text-white shadow-xl backdrop-blur-md">
         <div className="flex items-center gap-3">
-
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-lg font-bold">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 text-lg font-bold">
             A
           </div>
 
           <div>
-            <p className="text-sm font-semibold tracking-wide">
+            <p className="text-[15px] font-semibold tracking-wide">
               Cognora
             </p>
 
-            <p className="text-xs text-slate-400">
+            <p className="text-[13px] text-slate-200/80">
               by Altiora
             </p>
           </div>
-
         </div>
 
-        <div className="mt-4 border-t border-white/10 pt-4">
-          <p className="text-xs leading-relaxed text-slate-400">
+        <div className="mt-4 border-t border-white/15 pt-4">
+          <p className="text-[13px] leading-relaxed text-slate-200/80">
             Inteligencia adaptativa organizacional basada en interpretación contextual y evidencia multicapa.
           </p>
         </div>
-
       </div>
-
     </aside>
   );
 }
@@ -121,16 +115,20 @@ function Card({ children, className = "" }) {
 function Bar({ label, value, dark = false }) {
   return (
     <div>
-      <div className={`mb-2 flex justify-between text-sm ${
-        dark ? "text-slate-300" : "text-slate-700"
-      }`}>
+      <div
+        className={`mb-2 flex justify-between text-sm ${
+          dark ? "text-slate-100" : "text-slate-700"
+        }`}
+      >
         <span className="font-medium">{label}</span>
         <span>{value}%</span>
       </div>
 
-      <div className={`h-2 overflow-hidden rounded-full ${
-        dark ? "bg-white/10" : "bg-slate-100"
-      }`}>
+      <div
+        className={`h-2 overflow-hidden rounded-full ${
+          dark ? "bg-white/20" : "bg-slate-100"
+        }`}
+      >
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${value}%` }}
@@ -147,9 +145,7 @@ function Bar({ label, value, dark = false }) {
 function Dashboard({ setView }) {
   return (
     <main className="ml-72 min-h-screen bg-[#f6f8fb] p-10">
-
       <div className="mb-10 flex items-start justify-between">
-
         <div>
           <h2 className="text-5xl font-bold tracking-tight text-slate-950">
             Dashboard
@@ -163,11 +159,9 @@ function Dashboard({ setView }) {
         <button className="rounded-2xl bg-slate-950 px-7 py-4 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg">
           Nueva evaluación
         </button>
-
       </div>
 
       <section className="grid grid-cols-3 gap-6">
-
         <Card>
           <Brain className="mb-5 text-slate-950" />
 
@@ -175,9 +169,7 @@ function Dashboard({ setView }) {
             Proyectos activos
           </h3>
 
-          <p className="mt-6 text-6xl font-bold text-slate-950">
-            3
-          </p>
+          <p className="mt-6 text-6xl font-bold text-slate-950">3</p>
 
           <p className="mt-4 text-slate-500">
             2 requieren revisión interpretativa
@@ -191,13 +183,9 @@ function Dashboard({ setView }) {
             Candidatos
           </h3>
 
-          <p className="mt-6 text-6xl font-bold text-slate-950">
-            26
-          </p>
+          <p className="mt-6 text-6xl font-bold text-slate-950">26</p>
 
-          <p className="mt-4 text-slate-500">
-            5 reportes pendientes
-          </p>
+          <p className="mt-4 text-slate-500">5 reportes pendientes</p>
         </Card>
 
         <Card>
@@ -207,21 +195,16 @@ function Dashboard({ setView }) {
             Confianza interpretativa
           </h3>
 
-          <p className="mt-6 text-6xl font-bold text-slate-950">
-            Alta
-          </p>
+          <p className="mt-6 text-6xl font-bold text-slate-950">Alta</p>
 
           <p className="mt-4 text-slate-500">
             Basada en evidencia multicapa
           </p>
         </Card>
-
       </section>
 
       <section className="mt-6 grid grid-cols-2 gap-6">
-
         <Card>
-
           <h3 className="mb-5 text-3xl font-bold tracking-tight text-slate-950">
             Actividad interpretativa reciente
           </h3>
@@ -245,16 +228,14 @@ function Dashboard({ setView }) {
           >
             Abrir Report Explorer
           </button>
-
         </Card>
 
-        <Card className="border-0 bg-[#071426] text-white shadow-2xl">
-
+        <Card className="border-0 bg-[#102033] text-white shadow-2xl">
           <h3 className="mb-5 text-3xl font-bold tracking-tight">
             Perfil adaptativo de rol
           </h3>
 
-          <p className="mb-8 leading-relaxed text-slate-300">
+          <p className="mb-8 leading-relaxed text-slate-200">
             Cognora transforma contexto organizacional en mapas de inteligencia adaptativa y trayectorias interpretativas multicapa.
           </p>
 
@@ -265,11 +246,8 @@ function Dashboard({ setView }) {
           <div className="mt-6" />
 
           <Bar label="Colaboración" value={84} dark />
-
         </Card>
-
       </section>
-
     </main>
   );
 }
@@ -277,9 +255,7 @@ function Dashboard({ setView }) {
 function ReportExplorer() {
   return (
     <main className="ml-72 min-h-screen bg-[#f6f8fb] p-10">
-
       <section className="mb-8 flex items-start justify-between gap-8">
-
         <div>
           <p className="mb-2 text-sm text-slate-500">
             Reporte interpretativo
@@ -299,14 +275,12 @@ function ReportExplorer() {
         </div>
 
         <Card className="w-80">
-
           <div className="mb-5 flex items-center gap-2 font-bold text-slate-950">
             <ShieldCheck size={18} />
             Confianza interpretativa
           </div>
 
           <div className="space-y-4 text-sm text-slate-600">
-
             <div className="flex justify-between">
               <span>Confianza</span>
               <b className="text-slate-950">{perfil.confianza}</b>
@@ -321,17 +295,12 @@ function ReportExplorer() {
               <span>Consistencia</span>
               <b className="text-slate-950">{perfil.consistencia}</b>
             </div>
-
           </div>
-
         </Card>
-
       </section>
 
       <section className="grid grid-cols-3 gap-6">
-
         <Card className="col-span-2">
-
           <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-slate-950">
             <Brain size={22} />
             Mapa de configuración adaptativa
@@ -342,11 +311,9 @@ function ReportExplorer() {
               <Bar key={label} label={label} value={value} />
             ))}
           </div>
-
         </Card>
 
         <Card>
-
           <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-slate-950">
             <Sparkles size={22} />
             Dinámica central
@@ -365,20 +332,16 @@ function ReportExplorer() {
               {d}
             </div>
           ))}
-
         </Card>
-
       </section>
 
-      <Card className="mt-6 border-0 bg-[#071426] text-white shadow-2xl">
-
+      <Card className="mt-6 border-0 bg-[#102033] text-white shadow-2xl">
         <div className="mb-6 flex items-center gap-2 text-2xl font-bold">
           <Layers size={22} />
           Motor de tensiones adaptativas
         </div>
 
         <div className="grid grid-cols-3 gap-5">
-
           {[
             [
               "Visión estratégica / Fragilidad operacional",
@@ -393,28 +356,20 @@ function ReportExplorer() {
               "Alta autonomía con necesidad de sincronización periódica con equipos estratégicos.",
             ],
           ].map(([titulo, texto]) => (
-
             <motion.div
               key={titulo}
               whileHover={{ y: -5 }}
-              className="rounded-3xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:bg-white/10"
+              className="rounded-3xl border border-white/10 bg-white/10 p-5 transition-all duration-300 hover:bg-white/15"
             >
-              <h3 className="mb-3 font-bold">
-                {titulo}
-              </h3>
+              <h3 className="mb-3 font-bold">{titulo}</h3>
 
-              <p className="text-sm leading-relaxed text-slate-300">
+              <p className="text-sm leading-relaxed text-slate-200">
                 {texto}
               </p>
-
             </motion.div>
-
           ))}
-
         </div>
-
       </Card>
-
     </main>
   );
 }
@@ -422,7 +377,6 @@ function ReportExplorer() {
 function Placeholder({ title }) {
   return (
     <main className="ml-72 min-h-screen bg-[#f6f8fb] p-10">
-
       <h2 className="text-5xl font-bold tracking-tight text-slate-950">
         {title}
       </h2>
@@ -430,7 +384,6 @@ function Placeholder({ title }) {
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-500">
         Módulo en construcción. Esta versión prioriza el Report Explorer como núcleo interpretativo de Cognora.
       </p>
-
     </main>
   );
 }
@@ -442,13 +395,9 @@ export default function App() {
     <>
       <Sidebar view={view} setView={setView} />
 
-      {view === "Dashboard" && (
-        <Dashboard setView={setView} />
-      )}
+      {view === "Dashboard" && <Dashboard setView={setView} />}
 
-      {view === "Reportes" && (
-        <ReportExplorer />
-      )}
+      {view === "Reportes" && <ReportExplorer />}
 
       {!["Dashboard", "Reportes"].includes(view) && (
         <Placeholder title={view} />
