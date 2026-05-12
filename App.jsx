@@ -13,10 +13,14 @@ import {
   Activity,
   Layers,
   Compass,
+  Network,
+  Eye,
+  Target,
 } from "lucide-react";
 
 const perfil = {
   nombre: "Elena Martínez",
+  rol: "Dirección de Innovación Organizacional",
   configuracion: "Integradora Estratégica Adaptativa",
   resumen:
     "Muestra alta integración contextual, pensamiento estratégico y capacidad para coordinar escenarios ambiguos sin reducir la complejidad humana a decisiones simples.",
@@ -30,6 +34,43 @@ const perfil = {
     ["Estabilidad regulatoria", 68],
     ["Orientación a la ejecución", 74],
     ["Coherencia semántica", 88],
+  ],
+  tensiones: [
+    [
+      "Visión estratégica / Fragilidad operacional",
+      "Lectura macroestructural sólida con posible tensión ante cierres operativos rápidos.",
+    ],
+    [
+      "Colaboración adaptativa / Evitación de conflicto",
+      "Modula el vínculo colaborativo, aunque puede suavizar confrontaciones difíciles.",
+    ],
+    [
+      "Autonomía / Calibración colectiva reducida",
+      "Alta autonomía con necesidad de sincronización periódica con equipos estratégicos.",
+    ],
+  ],
+  evidencias: [
+    ["Estabilidad semántica", "Alta"],
+    ["Reencuadre adaptativo", "Moderado"],
+    ["Modulación colaborativa", "Alta"],
+    ["Coherencia discursiva", "Alta"],
+  ],
+  trayectoria: [
+    "Expansión hacia liderazgo estratégico transversal",
+    "Fortalecimiento de regulación bajo presión operacional",
+    "Mayor cierre decisional en contextos de alta demanda",
+  ],
+  alineacion: [
+    "Innovación adaptativa",
+    "Equipos interdisciplinarios",
+    "Autonomía estratégica",
+    "Cultura de aprendizaje",
+  ],
+  fricciones: [
+    "Jerarquías rígidas",
+    "Micromanagement",
+    "Baja tolerancia a la ambigüedad",
+    "Procedimientos excesivos",
   ],
 };
 
@@ -46,10 +87,7 @@ function Sidebar({ view, setView }) {
   return (
     <aside className="fixed left-0 top-0 z-20 min-h-screen w-72 border-r border-white/10 bg-[#102033] px-5 py-7 text-white">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-white">
-          Cognora
-        </h1>
-
+        <h1 className="text-3xl font-bold tracking-tight">Cognora</h1>
         <p className="mt-2 text-[15px] text-slate-200/80">
           Inteligencia adaptativa humana
         </p>
@@ -72,20 +110,14 @@ function Sidebar({ view, setView }) {
         ))}
       </nav>
 
-      <div className="absolute bottom-6 left-5 right-5 rounded-3xl border border-white/10 bg-white/10 p-5 text-white shadow-xl backdrop-blur-md">
+      <div className="absolute bottom-6 left-5 right-5 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-xl backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 text-lg font-bold">
             A
           </div>
-
           <div>
-            <p className="text-[15px] font-semibold tracking-wide">
-              Cognora
-            </p>
-
-            <p className="text-[13px] text-slate-200/80">
-              by Altiora
-            </p>
+            <p className="text-[15px] font-semibold">Cognora</p>
+            <p className="text-[13px] text-slate-200/80">by Altiora</p>
           </div>
         </div>
 
@@ -124,18 +156,12 @@ function Bar({ label, value, dark = false }) {
         <span>{value}%</span>
       </div>
 
-      <div
-        className={`h-2 overflow-hidden rounded-full ${
-          dark ? "bg-white/20" : "bg-slate-100"
-        }`}
-      >
+      <div className={`h-2 overflow-hidden rounded-full ${dark ? "bg-white/20" : "bg-slate-100"}`}>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${value}%` }}
           transition={{ duration: 0.9 }}
-          className={`h-full rounded-full ${
-            dark ? "bg-white" : "bg-slate-950"
-          }`}
+          className={`h-full rounded-full ${dark ? "bg-white" : "bg-slate-950"}`}
         />
       </div>
     </div>
@@ -150,7 +176,6 @@ function Dashboard({ setView }) {
           <h2 className="text-5xl font-bold tracking-tight text-slate-950">
             Dashboard
           </h2>
-
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-500">
             Una visión serena de evaluaciones adaptativas, inteligencia organizacional y actividad interpretativa.
           </p>
@@ -164,42 +189,23 @@ function Dashboard({ setView }) {
       <section className="grid grid-cols-3 gap-6">
         <Card>
           <Brain className="mb-5 text-slate-950" />
-
-          <h3 className="text-xl font-bold text-slate-950">
-            Proyectos activos
-          </h3>
-
+          <h3 className="text-xl font-bold text-slate-950">Proyectos activos</h3>
           <p className="mt-6 text-6xl font-bold text-slate-950">3</p>
-
-          <p className="mt-4 text-slate-500">
-            2 requieren revisión interpretativa
-          </p>
+          <p className="mt-4 text-slate-500">2 requieren revisión interpretativa</p>
         </Card>
 
         <Card>
           <Users className="mb-5 text-slate-950" />
-
-          <h3 className="text-xl font-bold text-slate-950">
-            Candidatos
-          </h3>
-
+          <h3 className="text-xl font-bold text-slate-950">Candidatos</h3>
           <p className="mt-6 text-6xl font-bold text-slate-950">26</p>
-
           <p className="mt-4 text-slate-500">5 reportes pendientes</p>
         </Card>
 
         <Card>
           <ShieldCheck className="mb-5 text-slate-950" />
-
-          <h3 className="text-xl font-bold text-slate-950">
-            Confianza interpretativa
-          </h3>
-
+          <h3 className="text-xl font-bold text-slate-950">Confianza interpretativa</h3>
           <p className="mt-6 text-6xl font-bold text-slate-950">Alta</p>
-
-          <p className="mt-4 text-slate-500">
-            Basada en evidencia multicapa
-          </p>
+          <p className="mt-4 text-slate-500">Basada en evidencia multicapa</p>
         </Card>
       </section>
 
@@ -214,10 +220,7 @@ function Dashboard({ setView }) {
             "Nuevo reporte de compatibilidad generado.",
             "Mapa adaptativo de rol completado.",
           ].map((item) => (
-            <div
-              key={item}
-              className="mb-3 rounded-2xl bg-slate-50 px-5 py-4 text-slate-600 transition-all duration-300 hover:bg-slate-100"
-            >
+            <div key={item} className="mb-3 rounded-2xl bg-slate-50 px-5 py-4 text-slate-600">
               ✨ {item}
             </div>
           ))}
@@ -234,17 +237,13 @@ function Dashboard({ setView }) {
           <h3 className="mb-5 text-3xl font-bold tracking-tight">
             Perfil adaptativo de rol
           </h3>
-
           <p className="mb-8 leading-relaxed text-slate-200">
             Cognora transforma contexto organizacional en mapas de inteligencia adaptativa y trayectorias interpretativas multicapa.
           </p>
-
           <Bar label="Flexibilidad adaptativa" value={86} dark />
           <div className="mt-6" />
-
           <Bar label="Complejidad estratégica" value={91} dark />
           <div className="mt-6" />
-
           <Bar label="Colaboración" value={84} dark />
         </Card>
       </section>
@@ -255,48 +254,45 @@ function Dashboard({ setView }) {
 function ReportExplorer() {
   return (
     <main className="ml-72 min-h-screen bg-[#f6f8fb] p-10">
-      <section className="mb-8 flex items-start justify-between gap-8">
-        <div>
-          <p className="mb-2 text-sm text-slate-500">
-            Reporte interpretativo
-          </p>
+      <section className="mb-8 rounded-[2rem] bg-white p-8 shadow-sm border border-slate-200/70">
+        <div className="flex items-start justify-between gap-8">
+          <div>
+            <p className="mb-2 text-sm font-medium text-slate-500">
+              Reporte interpretativo / Cognora Select
+            </p>
+            <h2 className="text-5xl font-bold tracking-tight text-slate-950">
+              {perfil.nombre}
+            </h2>
+            <p className="mt-2 text-slate-500">{perfil.rol}</p>
+            <p className="mt-4 text-2xl font-semibold text-[#102033]">
+              {perfil.configuracion}
+            </p>
+            <p className="mt-5 max-w-4xl text-lg leading-relaxed text-slate-600">
+              {perfil.resumen}
+            </p>
+          </div>
 
-          <h2 className="text-5xl font-bold tracking-tight text-slate-950">
-            {perfil.nombre}
-          </h2>
-
-          <p className="mt-3 text-2xl font-semibold text-slate-700">
-            {perfil.configuracion}
-          </p>
-
-          <p className="mt-5 max-w-4xl text-lg leading-relaxed text-slate-600">
-            {perfil.resumen}
-          </p>
+          <div className="w-80 rounded-3xl bg-[#102033] p-6 text-white shadow-xl">
+            <div className="mb-5 flex items-center gap-2 font-bold">
+              <ShieldCheck size={18} />
+              Confianza interpretativa
+            </div>
+            <div className="space-y-4 text-sm text-slate-200">
+              <div className="flex justify-between">
+                <span>Confianza</span>
+                <b>{perfil.confianza}</b>
+              </div>
+              <div className="flex justify-between">
+                <span>Estabilidad</span>
+                <b>{perfil.estabilidad}</b>
+              </div>
+              <div className="flex justify-between">
+                <span>Consistencia</span>
+                <b>{perfil.consistencia}</b>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <Card className="w-80">
-          <div className="mb-5 flex items-center gap-2 font-bold text-slate-950">
-            <ShieldCheck size={18} />
-            Confianza interpretativa
-          </div>
-
-          <div className="space-y-4 text-sm text-slate-600">
-            <div className="flex justify-between">
-              <span>Confianza</span>
-              <b className="text-slate-950">{perfil.confianza}</b>
-            </div>
-
-            <div className="flex justify-between">
-              <span>Estabilidad</span>
-              <b className="text-slate-950">{perfil.estabilidad}</b>
-            </div>
-
-            <div className="flex justify-between">
-              <span>Consistencia</span>
-              <b className="text-slate-950">{perfil.consistencia}</b>
-            </div>
-          </div>
-        </Card>
       </section>
 
       <section className="grid grid-cols-3 gap-6">
@@ -305,7 +301,6 @@ function ReportExplorer() {
             <Brain size={22} />
             Mapa de configuración adaptativa
           </div>
-
           <div className="space-y-6">
             {perfil.ejes.map(([label, value]) => (
               <Bar key={label} label={label} value={value} />
@@ -316,19 +311,15 @@ function ReportExplorer() {
         <Card>
           <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-slate-950">
             <Sparkles size={22} />
-            Dinámica central
+            Síntesis interpretativa
           </div>
-
           {[
             "Alta integración contextual",
             "Síntesis estratégica avanzada",
             "Buena tolerancia a la ambigüedad",
-            "Regulación moderadamente fluctuante",
+            "Regulación fluctuante bajo presión",
           ].map((d) => (
-            <div
-              key={d}
-              className="mb-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600"
-            >
+            <div key={d} className="mb-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
               {d}
             </div>
           ))}
@@ -342,34 +333,83 @@ function ReportExplorer() {
         </div>
 
         <div className="grid grid-cols-3 gap-5">
-          {[
-            [
-              "Visión estratégica / Fragilidad operacional",
-              "Lectura macroestructural sólida con posible tensión ante cierres operativos rápidos.",
-            ],
-            [
-              "Colaboración adaptativa / Evitación de conflicto",
-              "Modula el vínculo colaborativo, aunque puede suavizar confrontaciones difíciles.",
-            ],
-            [
-              "Autonomía / Calibración colectiva reducida",
-              "Alta autonomía con necesidad de sincronización periódica con equipos estratégicos.",
-            ],
-          ].map(([titulo, texto]) => (
+          {perfil.tensiones.map(([titulo, texto]) => (
             <motion.div
               key={titulo}
               whileHover={{ y: -5 }}
               className="rounded-3xl border border-white/10 bg-white/10 p-5 transition-all duration-300 hover:bg-white/15"
             >
               <h3 className="mb-3 font-bold">{titulo}</h3>
-
-              <p className="text-sm leading-relaxed text-slate-200">
-                {texto}
-              </p>
+              <p className="text-sm leading-relaxed text-slate-200">{texto}</p>
             </motion.div>
           ))}
         </div>
       </Card>
+
+      <section className="mt-6 grid grid-cols-2 gap-6">
+        <Card>
+          <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-slate-950">
+            <Eye size={22} />
+            Evidencia interpretativa
+          </div>
+
+          <div className="mb-6 grid grid-cols-2 gap-3">
+            {perfil.evidencias.map(([a, b]) => (
+              <div key={a} className="rounded-2xl bg-slate-50 p-4">
+                <p className="text-sm text-slate-500">{a}</p>
+                <p className="mt-1 text-lg font-bold text-slate-950">{b}</p>
+              </div>
+            ))}
+          </div>
+
+          <blockquote className="border-l-2 border-[#102033] pl-4 text-sm leading-relaxed text-slate-600">
+            “Cuando aumenta la ambigüedad, la respuesta tiende a integrar perspectivas antes que imponer una dirección única.”
+          </blockquote>
+        </Card>
+
+        <Card>
+          <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-slate-950">
+            <Compass size={22} />
+            Trayectoria adaptativa
+          </div>
+
+          {perfil.trayectoria.map((t) => (
+            <div key={t} className="mb-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
+              {t}
+            </div>
+          ))}
+        </Card>
+      </section>
+
+      <section className="mt-6 grid grid-cols-2 gap-6">
+        <Card>
+          <div className="mb-5 flex items-center gap-2 text-2xl font-bold text-slate-950">
+            <Target size={22} />
+            Alineación organizacional
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {perfil.alineacion.map((a) => (
+              <span key={a} className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">
+                {a}
+              </span>
+            ))}
+          </div>
+        </Card>
+
+        <Card>
+          <div className="mb-5 flex items-center gap-2 text-2xl font-bold text-slate-950">
+            <Network size={22} />
+            Zonas de fricción potencial
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {perfil.fricciones.map((a) => (
+              <span key={a} className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">
+                {a}
+              </span>
+            ))}
+          </div>
+        </Card>
+      </section>
     </main>
   );
 }
@@ -377,10 +417,7 @@ function ReportExplorer() {
 function Placeholder({ title }) {
   return (
     <main className="ml-72 min-h-screen bg-[#f6f8fb] p-10">
-      <h2 className="text-5xl font-bold tracking-tight text-slate-950">
-        {title}
-      </h2>
-
+      <h2 className="text-5xl font-bold tracking-tight text-slate-950">{title}</h2>
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-500">
         Módulo en construcción. Esta versión prioriza el Report Explorer como núcleo interpretativo de Cognora.
       </p>
@@ -394,14 +431,9 @@ export default function App() {
   return (
     <>
       <Sidebar view={view} setView={setView} />
-
       {view === "Dashboard" && <Dashboard setView={setView} />}
-
       {view === "Reportes" && <ReportExplorer />}
-
-      {!["Dashboard", "Reportes"].includes(view) && (
-        <Placeholder title={view} />
-      )}
+      {!["Dashboard", "Reportes"].includes(view) && <Placeholder title={view} />}
     </>
   );
 }
