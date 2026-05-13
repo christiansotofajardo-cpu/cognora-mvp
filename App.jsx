@@ -640,10 +640,25 @@ const openBackendEvaluation = async (evaluation) => {
 
               <div className="space-y-7">
                 {Object.entries(
-                  selectedBackendEvaluation.adaptiveProfile || {}
-                ).map(([label, value]) => (
-                  <Bar key={label} label={label} value={value} />
-                ))}
+  selectedBackendEvaluation.adaptiveProfile || {}
+).map(([label, value]) => {
+  const labelMap = {
+    flexibility: "Flexibilidad adaptativa",
+    ambiguity: "Tolerancia a la ambigüedad",
+    collaboration: "Colaboración",
+    leadership: "Liderazgo contextual",
+    strategicComplexity: "Complejidad estratégica",
+    regulation: "Regulación interpretativa",
+  };
+
+  return (
+    <Bar
+      key={label}
+      label={labelMap[label] || label}
+      value={value}
+    />
+  );
+})}
               </div>
             </Card>
 
