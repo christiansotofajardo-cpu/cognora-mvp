@@ -16,7 +16,7 @@ import {
   Network,
   Target,
 } from "lucide-react";
-
+import NewEvaluationFlow from "./src/pages/NewEvaluationFlow.jsx";
 const perfiles = [
   {
     nombre: "Elena Martínez",
@@ -654,7 +654,7 @@ export default function App() {
 
       {view === "Dashboard" && <Dashboard setView={setView} />}
 
-      {view === "Nueva" && <NewEvaluationView />}
+      {view === "Nueva" && <NewEvaluationFlow />}
 
       {view === "Reportes" && <ReportExplorer />}
 
