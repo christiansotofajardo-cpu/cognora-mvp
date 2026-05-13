@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
@@ -5,12 +6,38 @@ from uuid import uuid4
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from sqlalchemy import Column, DateTime, String, Text, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL is not configured")
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+
+class EvaluationDB(Base):
+    __tablename__ = "evaluations"
+
+    id = Column(String, primary_key=True, index=True)
+    status = Column(String, default="preliminary_report_ready")
+    source = Column(String, default="cognora_frontend_mvp")
+    payload = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    backend_received_at = Column(DateTime, default=datetime.utcnow)
+
+
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(
     title="Cognora API",
-    description="Backend inicial para evaluaciones adaptativas Cognora.",
-    version="0.1.0",
+    description="Backend inicial para evaluaciones adaptativas Cognora con PostgreSQL.",
+    version="0.2.0",
 )
 
 
@@ -42,7 +69,13 @@ class EvaluationPayload(BaseModel):
     interpretiveMetadata: Dict[str, Any] = Field(default_factory=dict)
 
 
-evaluations_store: List[Dict[str, Any]] = []
+def get_db():
+    db = SessionLocal()
+    try:
+        return db
+    except Exception:
+        db.close()
+        raise
 
 
 @app.get("/")
@@ -50,21 +83,30 @@ def root():
     return {
         "service": "Cognora API",
         "status": "running",
-        "version": "0.1.0",
+        "version": "0.2.0",
+        "storage": "postgresql",
     }
 
 
 @app.get("/health")
 def health():
-    return {
-        "status": "ok",
-        "timestamp": datetime.utcnow().isoformat(),
-        "evaluations_count": len(evaluations_store),
-    }
+    db = SessionLocal()
+    try:
+        count = db.query(EvaluationDB).count()
+        return {
+            "status": "ok",
+            "timestamp": datetime.utcnow().isoformat(),
+            "evaluations_count": count,
+            "storage": "postgresql",
+        }
+    finally:
+        db.close()
 
 
 @app.post("/evaluations")
 def create_evaluation(payload: EvaluationPayload):
+    import json
+
     evaluation = payload.model_dump()
 
     if not evaluation.get("id"):
@@ -75,27 +117,77 @@ def create_evaluation(payload: EvaluationPayload):
 
     evaluation["backendReceivedAt"] = datetime.utcnow().isoformat()
 
-    evaluations_store.insert(0, evaluation)
+    db = SessionLocal()
 
-    return {
-        "message": "Evaluation stored successfully",
-        "evaluation": evaluation,
-        "count": len(evaluations_store),
-    }
+    try:
+        record = EvaluationDB(
+            id=evaluation["id"],
+            status=evaluation.get("status", "preliminary_report_ready"),
+            source=evaluation.get("source", "cognora_frontend_mvp"),
+            payload=json.dumps(evaluation, ensure_ascii=False),
+            created_at=datetime.utcnow(),
+            backend_received_at=datetime.utcnow(),
+        )
+
+        db.add(record)
+        db.commit()
+        db.refresh(record)
+
+        count = db.query(EvaluationDB).count()
+
+        return {
+            "message": "Evaluation stored successfully in PostgreSQL",
+            "evaluation": evaluation,
+            "count": count,
+        }
+
+    finally:
+        db.close()
 
 
 @app.get("/evaluations")
 def list_evaluations():
-    return {
-        "count": len(evaluations_store),
-        "evaluations": evaluations_store,
-    }
+    import json
+
+    db = SessionLocal()
+
+    try:
+        records = (
+            db.query(EvaluationDB)
+            .order_by(EvaluationDB.backend_received_at.desc())
+            .all()
+        )
+
+        evaluations = [json.loads(record.payload) for record in records]
+
+        return {
+            "count": len(evaluations),
+            "evaluations": evaluations,
+            "storage": "postgresql",
+        }
+
+    finally:
+        db.close()
 
 
 @app.get("/evaluations/{evaluation_id}")
 def get_evaluation(evaluation_id: str):
-    for evaluation in evaluations_store:
-        if evaluation.get("id") == evaluation_id:
-            return evaluation
+    import json
 
-    raise HTTPException(status_code=404, detail="Evaluation not found")
+    db = SessionLocal()
+
+    try:
+        record = (
+            db.query(EvaluationDB)
+            .filter(EvaluationDB.id == evaluation_id)
+            .first()
+        )
+
+        if not record:
+            raise HTTPException(status_code=404, detail="Evaluation not found")
+
+        return json.loads(record.payload)
+
+    finally:
+        db.close()
+
