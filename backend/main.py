@@ -190,4 +190,78 @@ def get_evaluation(evaluation_id: str):
 
     finally:
         db.close()
+@app.get("/evaluations/{evaluation_id}/report")
+def get_evaluation_report(evaluation_id: str):
+    import json
 
+    db = SessionLocal()
+
+    try:
+        record = (
+            db.query(EvaluationDB)
+            .filter(EvaluationDB.id == evaluation_id)
+            .first()
+        )
+
+        if not record:
+            raise HTTPException(status_code=404, detail="Evaluation not found")
+
+        evaluation = json.loads(record.payload)
+
+        adaptive_profile = evaluation.get("adaptiveProfile", {})
+        critical_variables = evaluation.get("criticalVariables", [])
+        candidate = evaluation.get("candidate", {})
+        role = evaluation.get("role", {})
+        organization = evaluation.get("organization", {})
+        scenario = evaluation.get("scenario", {})
+
+        adaptive_values = [
+            value for value in adaptive_profile.values()
+            if isinstance(value, (int, float))
+        ]
+
+        average_profile = (
+            sum(adaptive_values) / len(adaptive_values)
+            if adaptive_values
+            else 0
+        )
+
+        if average_profile >= 80:
+            interpretive_level = "Alta configuración adaptativa"
+        elif average_profile >= 60:
+            interpretive_level = "Configuración adaptativa media"
+        else:
+            interpretive_level = "Configuración adaptativa inicial"
+
+        report = {
+            "evaluation_id": evaluation.get("id"),
+            "candidate": candidate.get("name") or "Candidato sin nombre",
+            "role": role.get("title") or "Rol sin definir",
+            "organization": organization.get("name") or "Organización sin definir",
+            "createdAt": evaluation.get("createdAt"),
+            "summary": {
+                "interpretiveLevel": interpretive_level,
+                "averageAdaptiveProfile": round(average_profile, 2),
+                "criticalVariablesCount": len(critical_variables),
+                "hasScenarioResponse": bool(
+                    scenario.get("response", "").strip()
+                ),
+            },
+            "adaptiveProfile": adaptive_profile,
+            "criticalVariables": critical_variables,
+            "scenario": scenario,
+            "preliminaryInterpretation": (
+                "La evaluación muestra una primera configuración adaptativa "
+                "basada en el perfil esperado, las variables críticas del entorno "
+                "y la respuesta situacional registrada. Este reporte constituye "
+                "una lectura preliminar y debe interpretarse como insumo inicial "
+                "para análisis organizacional más profundo."
+            ),
+            "storage": "postgresql",
+            "reportType": "preliminary_cognora_report",
+        }
+
+        return report
+
+    finally:
+        db.close()
