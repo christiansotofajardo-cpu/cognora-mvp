@@ -441,7 +441,7 @@ function ReportExplorer() {
   const [backendEvaluations, setBackendEvaluations] = useState([]);
   const [selectedBackendEvaluation, setSelectedBackendEvaluation] =
     useState(null);
-
+const [backendReport, setBackendReport] = useState(null);
   const perfil = perfiles[selected];
 
   useEffect(() => {
@@ -454,7 +454,22 @@ function ReportExplorer() {
         setBackendEvaluations([]);
       });
   }, []);
+const openBackendEvaluation = async (evaluation) => {
+  setSelectedBackendEvaluation(evaluation);
+  setBackendReport(null);
 
+  try {
+    const response = await fetch(
+      `https://cognora-api.onrender.com/evaluations/${evaluation.id}/report`
+    );
+
+    const report = await response.json();
+
+    setBackendReport(report);
+  } catch (error) {
+    console.error("COGNORA_REPORT_ERROR", error);
+  }
+};
   return (
     <Page>
       <section className="mb-7 rounded-[2rem] border border-slate-200/80 bg-white p-8 shadow-sm">
@@ -484,7 +499,7 @@ function ReportExplorer() {
           {backendEvaluations.slice(0, 6).map((evaluation) => (
             <button
               key={evaluation.id}
-              onClick={() => setSelectedBackendEvaluation(evaluation)}
+              onClick={() => openBackendEvaluation(evaluation)}
               className={`rounded-3xl p-6 text-left transition-all ${
                 selectedBackendEvaluation?.id === evaluation.id
                   ? "bg-[#102033] text-white shadow-xl"
