@@ -587,7 +587,50 @@ const openBackendEvaluation = async (evaluation) => {
               </div>
             </div>
           </div>
+{backendReport && (
+  <section className="mt-10 rounded-[2rem] border border-slate-200/80 bg-slate-50 p-8">
+    <p className="mb-2 text-base font-medium text-slate-600">
+      Reporte generado por Cognora API
+    </p>
 
+    <h3 className="text-4xl font-bold tracking-tight text-slate-950">
+      {backendReport.summary?.interpretiveLevel || "Nivel interpretativo no disponible"}
+    </h3>
+
+    <div className="mt-7 grid grid-cols-3 gap-5">
+      <div className="rounded-3xl bg-white p-6 shadow-sm">
+        <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Promedio adaptativo
+        </p>
+        <p className="mt-3 text-3xl font-bold text-slate-950">
+          {backendReport.summary?.averageAdaptiveProfile ?? "—"}%
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-white p-6 shadow-sm">
+        <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Variables críticas
+        </p>
+        <p className="mt-3 text-3xl font-bold text-slate-950">
+          {backendReport.summary?.criticalVariablesCount ?? "—"}
+        </p>
+      </div>
+
+      <div className="rounded-3xl bg-white p-6 shadow-sm">
+        <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Escenario
+        </p>
+        <p className="mt-3 text-3xl font-bold text-slate-950">
+          {backendReport.summary?.hasScenarioResponse ? "Sí" : "No"}
+        </p>
+      </div>
+    </div>
+
+    <p className="mt-7 text-xl leading-relaxed text-slate-700">
+      {backendReport.preliminaryInterpretation}
+    </p>
+  </section>
+)}
           <section className="mt-10 grid grid-cols-2 gap-7">
             <Card>
               <div className="mb-7 flex items-center gap-3 text-3xl font-bold text-slate-950">
