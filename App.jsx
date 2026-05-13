@@ -439,9 +439,67 @@ function NewEvaluationView() {
 function ReportExplorer() {
   const [selected, setSelected] = useState(0);
   const perfil = perfiles[selected];
+  const [backendEvaluations, setBackendEvaluations] = useState([]);
 
+  useEffect(() => {
+    fetch("https://cognora-api.onrender.com/evaluations")
+      .then((res) => res.json())
+      .then((data) => {
+        setBackendEvaluations(data.evaluations || []);
+      })
+      .catch(() => {
+        setBackendEvaluations([]);
+      });
+  }, []);
   return (
     <Page>
+            <section className="mb-7 rounded-[2rem] border border-slate-200/80 bg-white p-8 shadow-sm">
+        <div className="flex items-start justify-between gap-8">
+          <div>
+            <p className="mb-2 text-base font-medium text-slate-600">
+              Evaluaciones reales / Cognora API
+            </p>
+
+            <h2 className="text-4xl font-bold tracking-tight text-slate-950">
+              {backendEvaluations.length} evaluaciones recibidas
+            </h2>
+
+            <p className="mt-4 max-w-4xl text-lg leading-relaxed text-slate-600">
+              Estas evaluaciones fueron creadas desde el flujo real de Cognora y recibidas por FastAPI.
+            </p>
+          </div>
+
+          <div className="rounded-3xl bg-[#102033] px-7 py-5 text-white shadow-xl">
+            <p className="text-sm text-slate-300">Fuente</p>
+            <p className="mt-2 text-2xl font-bold">Backend real</p>
+          </div>
+        </div>
+
+        <div className="mt-7 grid grid-cols-3 gap-5">
+          {backendEvaluations.slice(0, 3).map((evaluation) => (
+            <div
+              key={evaluation.id}
+              className="rounded-3xl bg-slate-50 p-6"
+            >
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                Evaluación
+              </p>
+
+              <p className="mt-3 text-xl font-bold text-slate-950">
+                {evaluation.candidate?.name || "Candidato sin nombre"}
+              </p>
+
+              <p className="mt-2 text-base text-slate-600">
+                {evaluation.role?.title || "Rol sin definir"}
+              </p>
+
+              <p className="mt-4 text-sm text-slate-500">
+                {evaluation.organization?.name || "Organización sin definir"}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
       <div className="mb-6 flex flex-wrap gap-4">
         {perfiles.map((p, i) => (
           <button
