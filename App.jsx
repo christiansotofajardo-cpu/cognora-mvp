@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,
@@ -225,6 +225,18 @@ function Bar({ label, value, dark = false }) {
 }
 
 function Dashboard({ setView }) {
+    const [evaluationsCount, setEvaluationsCount] = useState(null);
+
+  useEffect(() => {
+    fetch("https://cognora-api.onrender.com/evaluations")
+      .then((res) => res.json())
+      .then((data) => {
+        setEvaluationsCount(data.count ?? 0);
+      })
+      .catch(() => {
+        setEvaluationsCount(null);
+      });
+  }, []);
   return (
     <Page>
       <div className="mb-10 flex items-start justify-between">
@@ -248,7 +260,12 @@ function Dashboard({ setView }) {
       <section className="grid grid-cols-3 gap-7">
         {[
           ["Proyectos activos", "3", "2 requieren revisión interpretativa", Brain],
-          ["Candidatos", "26", "5 reportes pendientes", Users],
+          [
+  "Evaluaciones recibidas",
+  evaluationsCount === null ? "—" : String(evaluationsCount),
+  "Leídas desde Cognora API",
+  Users,
+],,
           ["Confianza interpretativa", "Alta", "Basada en evidencia multicapa", ShieldCheck],
         ].map(([title, value, desc, Icon]) => (
           <Card key={title} className="min-h-[240px]">
