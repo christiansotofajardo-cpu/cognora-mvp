@@ -11,7 +11,7 @@ import {
 
 const STORAGE_KEY = "cognora_new_evaluation";
 const EVALUATIONS_KEY = "cognora_saved_evaluations";
-
+const API_URL = "https://cognora-api.onrender.com";
 const initialData = {
   organization: {
     name: "",
@@ -127,8 +127,40 @@ export default function NewEvaluationFlow() {
     };
   };
 
-  const handleGeneratePreliminaryReport = () => {
-    const evaluationPayload = buildEvaluationPayload();
+const handleGeneratePreliminaryReport = async () => {
+  const evaluationPayload = buildEvaluationPayload();
+
+  try {
+    const response = await fetch(`${API_URL}/evaluations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(evaluationPayload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al conectar con Cognora API");
+    }
+
+    const result = await response.json();
+
+    localStorage.setItem(
+      "cognora_last_evaluation",
+      JSON.stringify(result.evaluation)
+    );
+
+    console.log("COGNORA_BACKEND_RESPONSE", result);
+
+    alert(
+      "Evaluación enviada correctamente a Cognora API. Reporte preliminar generado."
+    );
+  } catch (error) {
+    console.error("COGNORA_API_ERROR", error);
+
+    alert(
+      "No se pudo conectar con Cognora API. La evaluación quedó en modo local."
+    );
 
     const previous = JSON.parse(
       localStorage.getItem(EVALUATIONS_KEY) || "[]"
@@ -137,14 +169,13 @@ export default function NewEvaluationFlow() {
     const updated = [evaluationPayload, ...previous];
 
     localStorage.setItem(EVALUATIONS_KEY, JSON.stringify(updated));
-    localStorage.setItem("cognora_last_evaluation", JSON.stringify(evaluationPayload));
 
-    console.log("COGNORA_EVALUATION_PAYLOAD", evaluationPayload);
-
-    alert(
-      "Reporte preliminar generado en modo mock. Payload guardado en localStorage y listo para conexión FastAPI."
+    localStorage.setItem(
+      "cognora_last_evaluation",
+      JSON.stringify(evaluationPayload)
     );
-  };
+  }
+};
 
   return (
     <main className="ml-72 min-h-screen w-[calc(100vw-18rem)] bg-[#f6f8fb] px-12 py-10 text-slate-950">
