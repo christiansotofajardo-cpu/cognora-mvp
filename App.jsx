@@ -205,9 +205,10 @@ function Bar({ label, value, dark = false }) {
         <span className="font-medium">{label}</span>
         <span>{value}%</span>
       </div>
+
       <div
         className={`h-3 overflow-hidden rounded-full ${
-          dark ? "bg-white/20" : "bg-slate-100"
+          dark ? "bg-white/30" : "bg-slate-100"
         }`}
       >
         <motion.div
@@ -288,11 +289,11 @@ function Dashboard({ setView }) {
           </button>
         </Card>
 
-        <Card className="min-h-[340px] border-0 bg-[#102033] text-white shadow-2xl">
+        <Card className="min-h-[340px] border-0 bg-gradient-to-br from-[#102033] to-[#1a2f47] text-white shadow-2xl">
           <h3 className="mb-6 text-4xl font-bold tracking-tight">
             Perfil adaptativo de rol
           </h3>
-          <p className="mb-8 text-xl leading-relaxed text-slate-200">
+          <p className="mb-8 text-xl leading-relaxed text-slate-100">
             Cognora transforma contexto organizacional en mapas de inteligencia adaptativa y trayectorias interpretativas multicapa.
           </p>
 
@@ -460,13 +461,13 @@ function ReportExplorer() {
             </p>
           </div>
 
-          <div className="w-96 shrink-0 rounded-3xl bg-[#102033] p-7 text-white shadow-xl">
+          <div className="w-96 shrink-0 rounded-3xl bg-gradient-to-br from-[#102033] to-[#1a2f47] p-7 text-white shadow-xl">
             <div className="mb-6 flex items-center gap-3 text-lg font-bold">
               <ShieldCheck size={22} />
               Confianza interpretativa
             </div>
 
-            <div className="space-y-5 text-base text-slate-200">
+            <div className="space-y-5 text-base text-slate-100">
               <div className="flex justify-between">
                 <span>Confianza</span>
                 <b>{perfil.confianza}</b>
@@ -515,7 +516,7 @@ function ReportExplorer() {
         </Card>
       </section>
 
-      <Card className="mt-7 border-0 bg-[#102033] text-white shadow-2xl">
+      <Card className="mt-7 border-0 bg-gradient-to-br from-[#102033] to-[#1a2f47] text-white shadow-2xl">
         <div className="mb-7 flex items-center gap-3 text-3xl font-bold">
           <Layers size={28} />
           Motor de tensiones adaptativas
@@ -529,7 +530,7 @@ function ReportExplorer() {
               className="rounded-3xl border border-white/10 bg-white/10 p-7 transition-all duration-300 hover:bg-white/15"
             >
               <h3 className="mb-4 text-2xl font-bold">{titulo}</h3>
-              <p className="text-lg leading-relaxed text-slate-200">{texto}</p>
+              <p className="text-lg leading-relaxed text-slate-100">{texto}</p>
             </motion.div>
           ))}
         </div>
