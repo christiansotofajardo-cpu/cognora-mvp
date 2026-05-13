@@ -10,12 +10,14 @@ import {
 } from "lucide-react";
 
 const STORAGE_KEY = "cognora_new_evaluation";
+const EVALUATIONS_KEY = "cognora_saved_evaluations";
 
 const initialData = {
   organization: {
     name: "",
     industry: "",
     size: "",
+    changeLevel: "",
     context: "",
   },
   role: {
@@ -103,6 +105,47 @@ export default function NewEvaluationFlow() {
     });
   };
 
+  const buildEvaluationPayload = () => {
+    return {
+      id: `cognora_eval_${Date.now()}`,
+      status: "preliminary_report_ready",
+      createdAt: new Date().toISOString(),
+      source: "cognora_frontend_mvp",
+      organization: data.organization,
+      role: data.role,
+      adaptiveProfile: data.adaptiveProfile,
+      criticalVariables: data.criticalVariables,
+      candidate: data.candidate,
+      scenario: data.scenario,
+      interpretiveMetadata: {
+        totalCriticalVariables: data.criticalVariables.length,
+        hasScenarioResponse: data.scenario.response.trim().length > 0,
+        averageAdaptiveProfile:
+          Object.values(data.adaptiveProfile).reduce((a, b) => a + b, 0) /
+          Object.values(data.adaptiveProfile).length,
+      },
+    };
+  };
+
+  const handleGeneratePreliminaryReport = () => {
+    const evaluationPayload = buildEvaluationPayload();
+
+    const previous = JSON.parse(
+      localStorage.getItem(EVALUATIONS_KEY) || "[]"
+    );
+
+    const updated = [evaluationPayload, ...previous];
+
+    localStorage.setItem(EVALUATIONS_KEY, JSON.stringify(updated));
+    localStorage.setItem("cognora_last_evaluation", JSON.stringify(evaluationPayload));
+
+    console.log("COGNORA_EVALUATION_PAYLOAD", evaluationPayload);
+
+    alert(
+      "Reporte preliminar generado en modo mock. Payload guardado en localStorage y listo para conexión FastAPI."
+    );
+  };
+
   return (
     <main className="ml-72 min-h-screen w-[calc(100vw-18rem)] bg-[#f6f8fb] px-12 py-10 text-slate-950">
       <div className="max-w-7xl">
@@ -179,9 +222,11 @@ export default function NewEvaluationFlow() {
 
                 <Input
                   label="Nivel de cambio actual"
-                  value="Alto"
-                  onChange={() => {}}
-                  placeholder="Alto"
+                  value={data.organization.changeLevel}
+                  onChange={(v) =>
+                    updateSection("organization", "changeLevel", v)
+                  }
+                  placeholder="Alto, medio, bajo"
                 />
               </div>
 
@@ -397,9 +442,8 @@ export default function NewEvaluationFlow() {
                 </h3>
 
                 <p className="mt-4 max-w-4xl text-xl leading-relaxed text-slate-100">
-                  Esta estructura ya puede conectarse a FastAPI y PostgreSQL
-                  para guardar evaluaciones, procesar respuestas y generar
-                  reportes Cognora multicapa.
+                  Esta estructura ya construye un payload real, lo guarda en
+                  localStorage y queda lista para enviarse a FastAPI.
                 </p>
               </div>
             </Section>
@@ -426,9 +470,7 @@ export default function NewEvaluationFlow() {
               </button>
             ) : (
               <button
-                onClick={() =>
-                  alert("Evaluación guardada en modo mock. Próximo paso: FastAPI.")
-                }
+                onClick={handleGeneratePreliminaryReport}
                 className="rounded-2xl bg-slate-950 px-8 py-5 text-lg font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg"
               >
                 Generar reporte preliminar
