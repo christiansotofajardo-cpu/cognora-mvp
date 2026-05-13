@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  ArrowLeft,
   ArrowRight,
   Building2,
   Briefcase,
@@ -19,14 +18,12 @@ const initialData = {
     size: "",
     context: "",
   },
-
   role: {
     title: "",
     area: "",
     level: "",
     workType: "",
   },
-
   adaptiveProfile: {
     flexibility: 70,
     ambiguity: 65,
@@ -35,16 +32,13 @@ const initialData = {
     strategicComplexity: 68,
     regulation: 72,
   },
-
   criticalVariables: [],
-
   candidate: {
     name: "",
     email: "",
     experience: "",
     notes: "",
   },
-
   scenario: {
     response: "",
   },
@@ -71,16 +65,13 @@ const criticalOptions = [
   "Riesgo de burnout",
 ];
 
-export default function NewEvaluationFlow({ onBack }) {
+export default function NewEvaluationFlow() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState(initialData);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-
-    if (saved) {
-      setData(JSON.parse(saved));
-    }
+    if (saved) setData(JSON.parse(saved));
   }, []);
 
   useEffect(() => {
@@ -113,55 +104,47 @@ export default function NewEvaluationFlow({ onBack }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 px-10 py-8 text-slate-950">
-      <div className="mx-auto max-w-6xl">
-        <button
-          onClick={onBack}
-          className="mb-6 flex items-center gap-2 text-sm text-slate-600 hover:text-slate-950"
-        >
-          <ArrowLeft size={16} />
-          Volver al dashboard
-        </button>
-
-        <div className="mb-8 flex items-start justify-between gap-6">
+    <main className="ml-72 min-h-screen w-[calc(100vw-18rem)] bg-[#f6f8fb] px-12 py-10 text-slate-950">
+      <div className="max-w-7xl">
+        <div className="mb-10 flex items-start justify-between gap-10">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">
-              Nueva evaluación
+            <p className="mb-3 text-base font-medium text-slate-600">
+              Cognora Select / Nueva evaluación
+            </p>
+
+            <h1 className="text-6xl font-bold tracking-tight text-slate-950">
+              Nueva evaluación adaptativa
             </h1>
 
-            <p className="mt-3 max-w-2xl text-slate-600">
-              Configura una evaluación adaptativa desde el contexto
-              organizacional, el perfil esperado y las variables críticas del
-              entorno.
+            <p className="mt-5 max-w-4xl text-xl leading-relaxed text-slate-600">
+              Configura una evaluación desde el contexto organizacional, el rol,
+              el perfil esperado y las variables críticas del entorno.
             </p>
           </div>
 
-          <div className="rounded-2xl bg-slate-950 px-5 py-4 text-white shadow-sm">
-            <p className="text-xs text-slate-300">Paso actual</p>
-
-            <p className="text-xl font-semibold">
-              {step + 1} / {steps.length}
+          <div className="rounded-3xl bg-[#102033] px-8 py-6 text-white shadow-xl">
+            <p className="text-sm text-slate-300">Paso actual</p>
+            <p className="mt-2 text-4xl font-bold">
+              {step + 1}/{steps.length}
             </p>
           </div>
         </div>
 
-        <div className="mb-8 rounded-full bg-white p-2 shadow-sm ring-1 ring-slate-200">
-          <div className="h-3 rounded-full bg-slate-200">
+        <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="h-4 overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-3 rounded-full bg-slate-950 transition-all"
+              className="h-full rounded-full bg-[#102033] transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
 
-          <div className="mt-4 grid grid-cols-7 gap-2 text-center text-xs">
+          <div className="mt-5 grid grid-cols-7 gap-3 text-center">
             {steps.map((label, index) => (
               <div
                 key={label}
-                className={
-                  index === step
-                    ? "font-semibold text-slate-950"
-                    : "text-slate-500"
-                }
+                className={`text-sm font-semibold ${
+                  index === step ? "text-slate-950" : "text-slate-400"
+                }`}
               >
                 {label}
               </div>
@@ -169,181 +152,151 @@ export default function NewEvaluationFlow({ onBack }) {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
+        <section className="rounded-[2rem] border border-slate-200/80 bg-white p-10 shadow-sm">
           {step === 0 && (
-            <Section
-              icon={<Building2 />}
-              title="Contexto organizacional"
-            >
-              <Input
-                label="Nombre de la organización"
-                value={data.organization.name}
-                onChange={(v) =>
-                  updateSection("organization", "name", v)
-                }
-              />
+            <Section icon={<Building2 />} title="Contexto organizacional">
+              <div className="grid grid-cols-2 gap-6">
+                <Input
+                  label="Nombre de la organización"
+                  value={data.organization.name}
+                  onChange={(v) => updateSection("organization", "name", v)}
+                  placeholder="Altiora"
+                />
 
-              <Input
-                label="Industria o sector"
-                value={data.organization.industry}
-                onChange={(v) =>
-                  updateSection("organization", "industry", v)
-                }
-              />
+                <Input
+                  label="Industria o sector"
+                  value={data.organization.industry}
+                  onChange={(v) => updateSection("organization", "industry", v)}
+                  placeholder="Tecnología, educación, salud, servicios..."
+                />
 
-              <Input
-                label="Tamaño aproximado"
-                value={data.organization.size}
-                onChange={(v) =>
-                  updateSection("organization", "size", v)
-                }
-              />
+                <Input
+                  label="Tamaño aproximado"
+                  value={data.organization.size}
+                  onChange={(v) => updateSection("organization", "size", v)}
+                  placeholder="Ejemplo: 150 colaboradores"
+                />
 
-              <Textarea
-                label="Contexto adaptativo actual"
-                value={data.organization.context}
-                onChange={(v) =>
-                  updateSection("organization", "context", v)
-                }
-              />
+                <Input
+                  label="Nivel de cambio actual"
+                  value="Alto"
+                  onChange={() => {}}
+                  placeholder="Alto"
+                />
+              </div>
+
+              <div className="mt-6">
+                <Textarea
+                  label="Contexto adaptativo actual"
+                  value={data.organization.context}
+                  onChange={(v) => updateSection("organization", "context", v)}
+                  placeholder="Describe brevemente el escenario organizacional que enfrenta el equipo."
+                />
+              </div>
             </Section>
           )}
 
           {step === 1 && (
-            <Section
-              icon={<Briefcase />}
-              title="Perfil del rol"
-            >
-              <Input
-                label="Nombre del cargo"
-                value={data.role.title}
-                onChange={(v) =>
-                  updateSection("role", "title", v)
-                }
-              />
+            <Section icon={<Briefcase />} title="Perfil del rol">
+              <div className="grid grid-cols-2 gap-6">
+                <Input
+                  label="Nombre del cargo"
+                  value={data.role.title}
+                  onChange={(v) => updateSection("role", "title", v)}
+                  placeholder="Liderazgo adaptativo"
+                />
 
-              <Input
-                label="Área"
-                value={data.role.area}
-                onChange={(v) =>
-                  updateSection("role", "area", v)
-                }
-              />
+                <Input
+                  label="Área"
+                  value={data.role.area}
+                  onChange={(v) => updateSection("role", "area", v)}
+                  placeholder="Innovación estratégica"
+                />
 
-              <Input
-                label="Nivel estratégico"
-                value={data.role.level}
-                onChange={(v) =>
-                  updateSection("role", "level", v)
-                }
-              />
+                <Input
+                  label="Nivel estratégico"
+                  value={data.role.level}
+                  onChange={(v) => updateSection("role", "level", v)}
+                  placeholder="Alta complejidad"
+                />
 
-              <Input
-                label="Tipo de trabajo"
-                value={data.role.workType}
-                onChange={(v) =>
-                  updateSection("role", "workType", v)
-                }
-              />
+                <Input
+                  label="Tipo de trabajo"
+                  value={data.role.workType}
+                  onChange={(v) => updateSection("role", "workType", v)}
+                  placeholder="Interdisciplinario, híbrido, directivo..."
+                />
+              </div>
             </Section>
           )}
 
           {step === 2 && (
-            <Section
-              icon={<Brain />}
-              title="Perfil adaptativo esperado"
-            >
-              <Slider
-                label="Flexibilidad adaptativa"
-                value={data.adaptiveProfile.flexibility}
-                onChange={(v) =>
-                  updateSection(
-                    "adaptiveProfile",
-                    "flexibility",
-                    v
-                  )
-                }
-              />
+            <Section icon={<Brain />} title="Perfil adaptativo esperado">
+              <div className="grid grid-cols-2 gap-6">
+                <Slider
+                  label="Flexibilidad adaptativa"
+                  value={data.adaptiveProfile.flexibility}
+                  onChange={(v) =>
+                    updateSection("adaptiveProfile", "flexibility", v)
+                  }
+                />
 
-              <Slider
-                label="Tolerancia a la ambigüedad"
-                value={data.adaptiveProfile.ambiguity}
-                onChange={(v) =>
-                  updateSection(
-                    "adaptiveProfile",
-                    "ambiguity",
-                    v
-                  )
-                }
-              />
+                <Slider
+                  label="Tolerancia a la ambigüedad"
+                  value={data.adaptiveProfile.ambiguity}
+                  onChange={(v) =>
+                    updateSection("adaptiveProfile", "ambiguity", v)
+                  }
+                />
 
-              <Slider
-                label="Colaboración"
-                value={data.adaptiveProfile.collaboration}
-                onChange={(v) =>
-                  updateSection(
-                    "adaptiveProfile",
-                    "collaboration",
-                    v
-                  )
-                }
-              />
+                <Slider
+                  label="Colaboración"
+                  value={data.adaptiveProfile.collaboration}
+                  onChange={(v) =>
+                    updateSection("adaptiveProfile", "collaboration", v)
+                  }
+                />
 
-              <Slider
-                label="Liderazgo contextual"
-                value={data.adaptiveProfile.leadership}
-                onChange={(v) =>
-                  updateSection(
-                    "adaptiveProfile",
-                    "leadership",
-                    v
-                  )
-                }
-              />
+                <Slider
+                  label="Liderazgo contextual"
+                  value={data.adaptiveProfile.leadership}
+                  onChange={(v) =>
+                    updateSection("adaptiveProfile", "leadership", v)
+                  }
+                />
 
-              <Slider
-                label="Complejidad estratégica"
-                value={data.adaptiveProfile.strategicComplexity}
-                onChange={(v) =>
-                  updateSection(
-                    "adaptiveProfile",
-                    "strategicComplexity",
-                    v
-                  )
-                }
-              />
+                <Slider
+                  label="Complejidad estratégica"
+                  value={data.adaptiveProfile.strategicComplexity}
+                  onChange={(v) =>
+                    updateSection("adaptiveProfile", "strategicComplexity", v)
+                  }
+                />
 
-              <Slider
-                label="Regulación interpretativa"
-                value={data.adaptiveProfile.regulation}
-                onChange={(v) =>
-                  updateSection(
-                    "adaptiveProfile",
-                    "regulation",
-                    v
-                  )
-                }
-              />
+                <Slider
+                  label="Regulación interpretativa"
+                  value={data.adaptiveProfile.regulation}
+                  onChange={(v) =>
+                    updateSection("adaptiveProfile", "regulation", v)
+                  }
+                />
+              </div>
             </Section>
           )}
 
           {step === 3 && (
-            <Section
-              icon={<Sparkles />}
-              title="Variables críticas del entorno"
-            >
-              <div className="grid grid-cols-2 gap-4">
+            <Section icon={<Sparkles />} title="Variables críticas del entorno">
+              <div className="grid grid-cols-2 gap-5">
                 {criticalOptions.map((item) => {
-                  const active =
-                    data.criticalVariables.includes(item);
+                  const active = data.criticalVariables.includes(item);
 
                   return (
                     <button
                       key={item}
                       onClick={() => toggleCritical(item)}
-                      className={`rounded-2xl border px-5 py-4 text-left text-sm transition ${
+                      className={`rounded-2xl border px-6 py-5 text-left text-lg transition-all ${
                         active
-                          ? "border-slate-950 bg-slate-950 text-white"
+                          ? "border-[#102033] bg-[#102033] text-white shadow-md"
                           : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
                       }`}
                     >
@@ -356,84 +309,70 @@ export default function NewEvaluationFlow({ onBack }) {
           )}
 
           {step === 4 && (
-            <Section
-              icon={<User />}
-              title="Datos del candidato"
-            >
-              <Input
-                label="Nombre completo"
-                value={data.candidate.name}
-                onChange={(v) =>
-                  updateSection("candidate", "name", v)
-                }
-              />
+            <Section icon={<User />} title="Datos del candidato">
+              <div className="grid grid-cols-2 gap-6">
+                <Input
+                  label="Nombre completo"
+                  value={data.candidate.name}
+                  onChange={(v) => updateSection("candidate", "name", v)}
+                  placeholder="Camila Rojas"
+                />
 
-              <Input
-                label="Correo"
-                value={data.candidate.email}
-                onChange={(v) =>
-                  updateSection("candidate", "email", v)
-                }
-              />
+                <Input
+                  label="Correo"
+                  value={data.candidate.email}
+                  onChange={(v) => updateSection("candidate", "email", v)}
+                  placeholder="camila@empresa.com"
+                />
 
-              <Input
-                label="Experiencia relevante"
-                value={data.candidate.experience}
-                onChange={(v) =>
-                  updateSection(
-                    "candidate",
-                    "experience",
-                    v
-                  )
-                }
-              />
+                <Input
+                  label="Experiencia relevante"
+                  value={data.candidate.experience}
+                  onChange={(v) =>
+                    updateSection("candidate", "experience", v)
+                  }
+                  placeholder="8 años en coordinación estratégica"
+                />
 
-              <Textarea
-                label="Notas internas"
-                value={data.candidate.notes}
-                onChange={(v) =>
-                  updateSection("candidate", "notes", v)
-                }
-              />
+                <Input
+                  label="Área previa"
+                  value={data.candidate.notes}
+                  onChange={(v) => updateSection("candidate", "notes", v)}
+                  placeholder="Gestión de equipos, innovación, liderazgo..."
+                />
+              </div>
             </Section>
           )}
 
           {step === 5 && (
-            <Section
-              icon={<Brain />}
-              title="Escenario situacional"
-            >
-              <div className="mb-6 rounded-2xl bg-slate-950 p-6 text-white">
-                <p className="text-sm leading-7 text-slate-200">
-                  Un equipo clave comienza a resistir una
-                  transformación organizacional que modifica
-                  prácticas históricas. La dirección espera avanzar
-                  rápido, pero parte del equipo percibe pérdida de
-                  autonomía y aumento de presión.
+            <Section icon={<Brain />} title="Escenario situacional">
+              <div className="rounded-3xl bg-gradient-to-br from-[#102033] to-[#1a2f47] p-8 text-white shadow-xl">
+                <p className="text-xl leading-relaxed text-slate-100">
+                  Un equipo clave comienza a resistir una transformación
+                  organizacional que modifica prácticas históricas. La dirección
+                  espera avanzar rápido, pero parte del equipo percibe pérdida
+                  de autonomía y aumento de presión. ¿Cómo interpretarías la
+                  situación y qué decisiones priorizarías?
                 </p>
               </div>
 
-              <Textarea
-                label="Respuesta interpretativa del candidato"
-                value={data.scenario.response}
-                onChange={(v) =>
-                  updateSection("scenario", "response", v)
-                }
-              />
+              <div className="mt-7">
+                <Textarea
+                  label="Respuesta interpretativa del candidato"
+                  value={data.scenario.response}
+                  onChange={(v) => updateSection("scenario", "response", v)}
+                  placeholder="Describe cómo abordarías la situación, qué tensiones identificas y qué decisiones tomarías."
+                />
+              </div>
             </Section>
           )}
 
           {step === 6 && (
-            <Section
-              icon={<CheckCircle2 />}
-              title="Síntesis preliminar"
-            >
-              <div className="grid grid-cols-2 gap-5">
+            <Section icon={<CheckCircle2 />} title="Síntesis preliminar">
+              <div className="grid grid-cols-4 gap-5">
                 <SummaryCard
                   title="Organización"
-                  value={
-                    data.organization.name || "Sin definir"
-                  }
+                  value={data.organization.name || "Sin definir"}
                 />
 
                 <SummaryCard
@@ -443,26 +382,24 @@ export default function NewEvaluationFlow({ onBack }) {
 
                 <SummaryCard
                   title="Candidato"
-                  value={
-                    data.candidate.name || "Sin definir"
-                  }
+                  value={data.candidate.name || "Sin definir"}
                 />
 
                 <SummaryCard
-                  title="Variables críticas"
-                  value={`${data.criticalVariables.length} seleccionadas`}
+                  title="Variables"
+                  value={`${data.criticalVariables.length}`}
                 />
               </div>
 
-              <div className="mt-8 rounded-2xl bg-slate-950 p-6 text-white">
-                <h3 className="text-xl font-semibold">
-                  Evaluación lista para procesamiento
-                  interpretativo
+              <div className="mt-8 rounded-3xl bg-gradient-to-br from-[#102033] to-[#1a2f47] p-8 text-white shadow-xl">
+                <h3 className="text-3xl font-bold">
+                  Evaluación lista para procesamiento interpretativo
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-slate-300">
-                  Esta estructura ya puede conectarse a FastAPI y
-                  PostgreSQL.
+                <p className="mt-4 max-w-4xl text-xl leading-relaxed text-slate-100">
+                  Esta estructura ya puede conectarse a FastAPI y PostgreSQL
+                  para guardar evaluaciones, procesar respuestas y generar
+                  reportes Cognora multicapa.
                 </p>
               </div>
             </Section>
@@ -470,11 +407,9 @@ export default function NewEvaluationFlow({ onBack }) {
 
           <div className="mt-10 flex justify-between">
             <button
-              onClick={() =>
-                setStep((s) => Math.max(0, s - 1))
-              }
+              onClick={() => setStep((s) => Math.max(0, s - 1))}
               disabled={step === 0}
-              className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 disabled:opacity-40"
+              className="rounded-2xl border border-slate-200 bg-white px-8 py-5 text-lg font-semibold text-slate-700 transition disabled:opacity-40"
             >
               Anterior
             </button>
@@ -482,80 +417,74 @@ export default function NewEvaluationFlow({ onBack }) {
             {step < steps.length - 1 ? (
               <button
                 onClick={() =>
-                  setStep((s) =>
-                    Math.min(steps.length - 1, s + 1)
-                  )
+                  setStep((s) => Math.min(steps.length - 1, s + 1))
                 }
-                className="flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white"
+                className="flex items-center gap-3 rounded-2xl bg-slate-950 px-8 py-5 text-lg font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg"
               >
                 Siguiente
-                <ArrowRight size={16} />
+                <ArrowRight size={20} />
               </button>
             ) : (
               <button
                 onClick={() =>
-                  alert(
-                    "Evaluación guardada en modo mock."
-                  )
+                  alert("Evaluación guardada en modo mock. Próximo paso: FastAPI.")
                 }
-                className="rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white"
+                className="rounded-2xl bg-slate-950 px-8 py-5 text-lg font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg"
               >
-                Guardar evaluación
+                Generar reporte preliminar
               </button>
             )}
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
 
 function Section({ icon, title, children }) {
   return (
     <div>
-      <div className="mb-8 flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-950">
+      <div className="mb-8 flex items-center gap-4">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-[#102033]">
           {icon}
         </div>
 
-        <h2 className="text-2xl font-bold">{title}</h2>
+        <h2 className="text-4xl font-bold tracking-tight text-slate-950">
+          {title}
+        </h2>
       </div>
 
-      <div className="grid gap-5">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
 
-function Input({ label, value, onChange }) {
+function Input({ label, value, onChange, placeholder }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-semibold text-slate-700">
-        {label}
-      </span>
+      <span className="text-lg font-medium text-slate-700">{label}</span>
 
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm outline-none focus:border-slate-950"
+        placeholder={placeholder}
+        className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-lg outline-none transition-all focus:border-slate-400"
       />
     </label>
   );
 }
 
-function Textarea({ label, value, onChange }) {
+function Textarea({ label, value, onChange, placeholder }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-semibold text-slate-700">
-        {label}
-      </span>
+      <span className="text-lg font-medium text-slate-700">{label}</span>
 
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        rows={5}
-        className="resize-none rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm leading-7 outline-none focus:border-slate-950"
+        rows={6}
+        placeholder={placeholder}
+        className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-lg leading-relaxed outline-none transition-all focus:border-slate-400"
       />
     </label>
   );
@@ -563,15 +492,10 @@ function Textarea({ label, value, onChange }) {
 
 function Slider({ label, value, onChange }) {
   return (
-    <div className="rounded-2xl bg-slate-50 p-5">
-      <div className="mb-3 flex justify-between text-sm">
-        <span className="font-semibold text-slate-700">
-          {label}
-        </span>
-
-        <span className="font-bold text-slate-950">
-          {value}%
-        </span>
+    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+      <div className="mb-4 flex justify-between text-lg">
+        <span className="font-medium text-slate-700">{label}</span>
+        <span className="font-bold text-slate-950">{value}%</span>
       </div>
 
       <input
@@ -579,9 +503,7 @@ function Slider({ label, value, onChange }) {
         min="0"
         max="100"
         value={value}
-        onChange={(e) =>
-          onChange(Number(e.target.value))
-        }
+        onChange={(e) => onChange(Number(e.target.value))}
         className="w-full"
       />
     </div>
@@ -590,14 +512,12 @@ function Slider({ label, value, onChange }) {
 
 function SummaryCard({ title, value }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+      <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
         {title}
       </p>
 
-      <p className="mt-2 text-xl font-bold text-slate-950">
-        {value}
-      </p>
+      <p className="mt-3 text-3xl font-bold text-slate-950">{value}</p>
     </div>
   );
 }
