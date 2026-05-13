@@ -496,6 +496,9 @@ function ReportExplorer() {
               <p className="mt-4 text-sm text-slate-500">
                 {evaluation.organization?.name || "Organización sin definir"}
               </p>
+              <p className="mt-2 text-xs text-slate-400">
+  {new Date(evaluation.createdAt).toLocaleString()}
+</p>
             </div>
           ))}
         </div>
